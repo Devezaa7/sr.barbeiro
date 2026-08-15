@@ -1,4 +1,5 @@
 import { CalendarCheck, MapPin } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 import heroImagem from "@/assets/hero-barbearia.jpg";
 import heroVideo from "@/assets/hero-barbearia.mp4.asset.json";
@@ -6,9 +7,23 @@ import { Button } from "@/components/ui/button";
 import { NEGOCIO, linkWhatsApp } from "@/lib/negocio";
 
 export function SecaoHero() {
+  const refVideo = useRef<HTMLVideoElement>(null);
+
+  // Alguns navegadores ignoram o atributo autoplay em SSR/hidratação;
+  // como o vídeo é mudo, chamar play() manualmente é permitido.
+  useEffect(() => {
+    const video = refVideo.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play().catch(() => {
+      /* autoplay bloqueado: o poster permanece visível */
+    });
+  }, []);
+
   return (
     <section className="relative isolate overflow-hidden">
       <video
+        ref={refVideo}
         src={heroVideo.url}
         poster={heroImagem}
         autoPlay
