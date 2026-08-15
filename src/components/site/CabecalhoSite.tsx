@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useSessao } from "@/hooks/useSessao";
 import { cn } from "@/lib/utils";
-import { NEGOCIO } from "@/lib/negocio";
 
 const SECOES = [
   { href: "/#sobre", label: "Sobre" },
