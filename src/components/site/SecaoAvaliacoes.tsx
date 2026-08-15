@@ -18,7 +18,7 @@ export function SecaoAvaliacoes() {
             </h2>
           </div>
           <p className="text-sm text-muted-foreground">
-            {NEGOCIO.avaliacaoTotal} avaliações de clientes de {NEGOCIO.cidade}
+            {NEGOCIO.avaliacaoTotal} avaliações de clientes reais no Google
           </p>
         </div>
 

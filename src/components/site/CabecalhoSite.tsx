@@ -41,9 +41,6 @@ export function CabecalhoSite({ className, ...props }: CabecalhoSiteProps) {
           <span className="font-display text-lg font-semibold tracking-[0.18em] uppercase">
             Sr. Barbeiro
           </span>
-          <span className="text-[0.6rem] tracking-[0.3em] text-muted-foreground uppercase">
-            Desde {NEGOCIO.desde} · Campo Grande
-          </span>
         </Link>
 
         <nav aria-label="Seções do site" className="hidden items-center gap-7 md:flex">

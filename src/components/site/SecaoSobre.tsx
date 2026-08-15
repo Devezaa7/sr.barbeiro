@@ -29,15 +29,13 @@ export function SecaoSobre() {
           </h2>
           <div className="mt-6 space-y-4 text-muted-foreground">
             <p>
-              A {NEGOCIO.nome} abriu as portas em {NEGOCIO.desde}, em {NEGOCIO.cidade}, e desde
-              então trabalha com uma ideia simples: o corte é o começo, não o fim. O que sustenta a
-              casa é o cuidado com o visual de cada cliente — leitura do formato do rosto, tipo de
-              cabelo, desenho da barba e acabamento feito sem pressa.
+              A {NEGOCIO.nome} trabalha com uma ideia simples: o corte é o começo, não o fim. O que
+              sustenta a casa é o cuidado com o visual de cada cliente — leitura do formato do
+              rosto, tipo de cabelo, desenho da barba e acabamento feito sem pressa.
             </p>
             <p>
-              São {NEGOCIO.avaliacaoTotal} avaliações no Google com nota {NEGOCIO.avaliacaoNota}, o
-              resultado de um padrão que se repete em todo atendimento: pontualidade no horário
-              marcado, ferramentas higienizadas e conversa franca sobre o que funciona para você.
+              O padrão se repete em todo atendimento: pontualidade no horário marcado, ferramentas
+              higienizadas e conversa franca sobre o que funciona para você.
             </p>
           </div>
         </div>
