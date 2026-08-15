@@ -51,8 +51,7 @@ export function SecaoHero() {
         </h1>
         <div aria-hidden className="mt-6 h-px w-24 rule-gold" />
         <p className="mt-6 max-w-xl text-lg text-muted-foreground md:text-xl">
-          Mais que corte: cuidado com o visual. Barbearia de bairro com padrão de atendimento
-          construído dia após dia desde {NEGOCIO.desde}.
+          Precisão em cada detalhe. Corte, barba e cuidado com o visual desde {NEGOCIO.desde}.
         </p>
 
         <div className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
