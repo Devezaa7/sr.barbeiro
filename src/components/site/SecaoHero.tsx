@@ -30,7 +30,7 @@ export function SecaoHero() {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         disablePictureInPicture
         aria-hidden
         tabIndex={-1}
