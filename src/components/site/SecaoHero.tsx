@@ -1,22 +1,33 @@
 import { CalendarCheck, MapPin } from "lucide-react";
 
 import heroImagem from "@/assets/hero-barbearia.jpg";
+import heroVideo from "@/assets/hero-barbearia.mp4.asset.json";
 import { Button } from "@/components/ui/button";
 import { NEGOCIO, linkWhatsApp } from "@/lib/negocio";
 
 export function SecaoHero() {
   return (
     <section className="relative isolate overflow-hidden">
-      <img
-        src={heroImagem}
-        alt="Interior da barbearia Sr. Barbeiro com cadeira de barbeiro e iluminação âmbar"
-        width={1920}
-        height={1088}
+      <video
+        src={heroVideo.url}
+        poster={heroImagem}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        disablePictureInPicture
+        aria-hidden
+        tabIndex={-1}
         className="absolute inset-0 -z-10 size-full object-cover"
       />
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/85 to-background/40"
+        className="absolute inset-0 -z-10 bg-background/65"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/80 to-background/40"
       />
 
       <div className="mx-auto flex w-full max-w-6xl flex-col justify-center px-4 py-24 md:px-6 md:py-36">
