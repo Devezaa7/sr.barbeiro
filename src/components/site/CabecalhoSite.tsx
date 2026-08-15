@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useSessao } from "@/hooks/useSessao";
 import { cn } from "@/lib/utils";
-import { NEGOCIO } from "@/lib/negocio";
 
 const SECOES = [
   { href: "/#sobre", label: "Sobre" },
@@ -40,9 +39,6 @@ export function CabecalhoSite({ className, ...props }: CabecalhoSiteProps) {
         <Link to="/" className="flex flex-col leading-none">
           <span className="font-display text-lg font-semibold tracking-[0.18em] uppercase">
             Sr. Barbeiro
-          </span>
-          <span className="text-[0.6rem] tracking-[0.3em] text-muted-foreground uppercase">
-            Desde {NEGOCIO.desde} · Campo Grande
           </span>
         </Link>
 

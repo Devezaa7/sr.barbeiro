@@ -11,6 +11,7 @@ export const NEGOCIO = {
   enderecoCompleto:
     "Estr. da Cachamorra, 272 - Loja - Campo Grande, Rio de Janeiro - RJ, 23040-150",
   enderecoResumido: "Estr. da Cachamorra, 272 - Loja - Campo Grande, RJ",
+  enderecoCurto: "Estr. da Cachamorra, 272 - Loja - Campo Grande",
   cep: "23040-150",
   telefoneExibicao: "(21) 98089-1754",
   telefoneE164: "+5521980891754",

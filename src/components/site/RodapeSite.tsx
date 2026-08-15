@@ -11,10 +11,7 @@ export function RodapeSite() {
           <p className="font-display text-lg font-semibold tracking-[0.18em] uppercase">
             {NEGOCIO.nome}
           </p>
-          <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-            {NEGOCIO.enderecoResumido}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">CEP {NEGOCIO.cep}</p>
+          <p className="mt-2 max-w-xs text-sm text-muted-foreground">{NEGOCIO.posicionamento}</p>
         </div>
 
         <nav aria-label="Redes e páginas" className="flex flex-col gap-3 text-sm">
