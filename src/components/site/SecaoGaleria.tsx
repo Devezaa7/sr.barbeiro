@@ -19,11 +19,22 @@ interface ItemMosaico {
 }
 
 const MOSAICO: readonly ItemMosaico[] = [
-  { imagem: galeriaImagem1, area: "col-span-2 aspect-[4/3] md:col-span-4 md:row-span-2" },
-  { imagem: galeriaImagem2, area: "col-span-1 aspect-[3/4] md:col-span-2 md:row-span-3" },
-  { imagem: galeriaImagem4, area: "col-span-1 aspect-square md:col-span-2 md:row-span-2" },
-  { imagem: galeriaImagem3, area: "col-span-2 aspect-[16/9] md:col-span-2 md:row-span-2" },
-  { imagem: galeriaImagem5, area: "col-span-2 aspect-[16/9] md:col-span-2 md:row-span-2" },
+  {
+    imagem: galeriaImagem1,
+    area: "col-span-2 aspect-[4/3] md:col-span-4 md:row-span-2 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem2,
+    area: "col-span-1 aspect-[3/4] md:col-span-2 md:row-span-4 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem4,
+    area: "col-span-1 aspect-square md:col-span-2 md:row-span-2 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem3,
+    area: "col-span-2 aspect-[16/9] md:col-span-2 md:row-span-2 md:aspect-auto",
+  },
 ];
 
 export function SecaoGaleria() {
@@ -33,7 +44,7 @@ export function SecaoGaleria() {
         <p className="text-eyebrow">Galeria</p>
         <h2 className="mt-4 text-3xl font-semibold uppercase md:text-4xl">Ambiente e trabalho</h2>
 
-        <div className="mt-10 grid auto-rows-auto grid-cols-2 gap-2 md:grid-cols-6 md:gap-3">
+        <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-6 md:grid-rows-[repeat(4,minmax(0,150px))] md:gap-3">
           {MOSAICO.map(({ imagem, area }) => (
             <figure
               key={imagem.src}
