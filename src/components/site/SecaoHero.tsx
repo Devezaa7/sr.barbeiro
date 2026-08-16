@@ -78,10 +78,6 @@ export function SecaoHero() {
               </span>
             </dd>
           </div>
-          <div>
-            <dt className="text-xs tracking-widest text-muted-foreground uppercase">Em atividade</dt>
-            <dd className="font-display text-2xl">desde {NEGOCIO.desde}</dd>
-          </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="size-4 text-primary" aria-hidden />
             {NEGOCIO.enderecoCurto}
