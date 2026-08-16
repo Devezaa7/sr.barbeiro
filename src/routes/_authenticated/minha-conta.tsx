@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSessao } from "@/hooks/useSessao";
 import { supabase } from "@/integrations/supabase/client";
 import { STATUS_LABEL, formatarDataBR, formatarHora, hojeISOBrasilia } from "@/lib/agenda";
+import { mensagemAmigavel } from "@/lib/erros";
 
 export const Route = createFileRoute("/_authenticated/minha-conta")({
   head: () => ({
@@ -37,7 +38,13 @@ function MinhaConta() {
   const { user } = useSessao();
   const queryClient = useQueryClient();
 
-  const { data: agendamentos, isLoading } = useQuery({
+  const {
+    data: agendamentos,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ["meus-agendamentos", user?.id],
     enabled: Boolean(user?.id),
     queryFn: async (): Promise<LinhaAgendamento[]> => {
@@ -64,7 +71,8 @@ function MinhaConta() {
       toast.success("Agendamento cancelado.");
       void queryClient.invalidateQueries({ queryKey: ["meus-agendamentos"] });
     },
-    onError: () => toast.error("Não foi possível cancelar agora."),
+    onError: (erro: unknown) =>
+      toast.error(mensagemAmigavel(erro, "Não foi possível cancelar agora.")),
   });
 
   const hoje = hojeISOBrasilia();
@@ -77,6 +85,15 @@ function MinhaConta() {
       descricao="Cancelamentos e remarcações devem ser feitos com pelo menos 2 horas de antecedência."
     >
       {isLoading && <Skeleton className="h-32 w-full" />}
+
+      {isError && (
+        <div className="surface-panel p-6 text-sm">
+          <p className="text-muted-foreground">{mensagemAmigavel(error)}</p>
+          <Button className="mt-4" variant="outline" size="sm" onClick={() => void refetch()}>
+            Tentar novamente
+          </Button>
+        </div>
+      )}
 
       <section>
         <h2 className="text-eyebrow">Próximos</h2>
