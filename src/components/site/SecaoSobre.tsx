@@ -1,5 +1,5 @@
-import ambiente from "@/assets/galeria-ambiente.jpg";
-import ferramentas from "@/assets/galeria-ferramentas.jpg";
+import { sobreImagem1, sobreImagem2, sobreImagem3 } from "@/lib/imagens";
+
 export function SecaoSobre() {
   return (
     <section id="sobre" className="border-t border-border/70 bg-background">
@@ -27,25 +27,25 @@ export function SecaoSobre() {
         <div className="mt-14 grid gap-px bg-border/60 md:mt-20 md:grid-cols-12">
           <article className="relative isolate overflow-hidden bg-background md:col-span-7">
             <img
-              src={ambiente}
-              alt="Área de espera climatizada da barbearia"
+              src={sobreImagem2.src}
+              alt={sobreImagem2.alt}
               loading="lazy"
-              width={1024}
-              height={1024}
-              className="absolute inset-0 -z-10 size-full object-cover opacity-45"
+              width={sobreImagem2.largura}
+              height={sobreImagem2.altura}
+              className="foto-tratada absolute inset-0 -z-10 size-full object-cover opacity-60"
             />
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/85 to-background/30"
+              className="foto-overlay absolute inset-0 -z-10"
             />
             <div className="flex h-full min-h-64 flex-col justify-end p-7 md:p-10">
               <span className="text-eyebrow">01</span>
               <h3 className="mt-4 font-display text-2xl uppercase md:text-3xl">
-                Ambiente climatizado
+                Ferramenta afiada, higiene em primeiro lugar
               </h3>
               <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-                Espaço limpo, climatizado e pensado para o cliente ficar à vontade enquanto espera a
-                vez.
+                Navalha, tesoura e máquina higienizadas antes de cada atendimento. Ambiente limpo e
+                climatizado do começo ao fim.
               </p>
             </div>
           </article>
@@ -64,7 +64,7 @@ export function SecaoSobre() {
             </p>
           </article>
 
-          <article className="grid bg-background md:col-span-12 md:grid-cols-[minmax(0,1fr)_240px]">
+          <article className="grid bg-background md:col-span-12 md:grid-cols-[minmax(0,1fr)_260px_260px]">
             <div className="p-7 md:p-10">
               <span className="text-eyebrow">03</span>
               <h3 className="mt-4 max-w-md font-display text-2xl uppercase md:text-3xl">
@@ -76,12 +76,20 @@ export function SecaoSobre() {
               </p>
             </div>
             <img
-              src={ferramentas}
-              alt="Navalha, tesoura e máquina sobre bancada escura"
+              src={sobreImagem3.src}
+              alt={sobreImagem3.alt}
               loading="lazy"
-              width={1024}
-              height={1024}
-              className="hidden size-full object-cover md:block"
+              width={sobreImagem3.largura}
+              height={sobreImagem3.altura}
+              className="foto-tratada hidden size-full object-cover md:block"
+            />
+            <img
+              src={sobreImagem1.src}
+              alt={sobreImagem1.alt}
+              loading="lazy"
+              width={sobreImagem1.largura}
+              height={sobreImagem1.altura}
+              className="foto-tratada hidden size-full object-cover md:block"
             />
           </article>
         </div>

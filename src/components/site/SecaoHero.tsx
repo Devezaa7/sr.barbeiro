@@ -1,9 +1,8 @@
 import { CalendarCheck, MapPin } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-import heroImagem from "@/assets/hero-barbearia.jpg";
-import heroVideo from "@/assets/hero-barbearia.mp4.asset.json";
 import { Button } from "@/components/ui/button";
+import { heroPoster, heroVideo } from "@/lib/imagens";
 import { NEGOCIO, linkWhatsApp } from "@/lib/negocio";
 
 export function SecaoHero() {
@@ -24,8 +23,8 @@ export function SecaoHero() {
     <section className="relative isolate overflow-hidden">
       <video
         ref={refVideo}
-        src={heroVideo.url}
-        poster={heroImagem}
+        src={heroVideo}
+        poster={heroPoster.src}
         autoPlay
         muted
         loop
@@ -34,7 +33,7 @@ export function SecaoHero() {
         disablePictureInPicture
         aria-hidden
         tabIndex={-1}
-        className="absolute inset-0 -z-10 size-full object-cover"
+        className="foto-tratada absolute inset-0 -z-10 size-full object-cover"
       />
       <div
         aria-hidden

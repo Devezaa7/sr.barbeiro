@@ -146,3 +146,22 @@
     transparent
   );
 }
+
+/*
+ * Tratamento fotográfico único do site: mesmo contraste, saturação e
+ * temperatura de cor em todas as fotos, para que imagens de origens
+ * diferentes (inclusive fotos reais futuras) pareçam do mesmo ensaio.
+ */
+@utility foto-tratada {
+  filter: brightness(0.9) contrast(1.12) saturate(0.9) sepia(0.12);
+}
+
+/* Camada de unificação de paleta aplicada por cima das fotos. */
+@utility foto-overlay {
+  background-image: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--color-background) 78%, transparent),
+    color-mix(in oklab, var(--color-background) 18%, transparent) 60%,
+    color-mix(in oklab, var(--color-primary) 8%, transparent)
+  );
+}

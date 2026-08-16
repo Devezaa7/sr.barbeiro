@@ -1,18 +1,41 @@
-import ambiente from "@/assets/galeria-ambiente.jpg";
-import barba from "@/assets/galeria-barba.jpg";
-import corte from "@/assets/galeria-corte.jpg";
-import ferramentas from "@/assets/galeria-ferramentas.jpg";
+import type { ImagemSite } from "@/lib/imagens";
+import {
+  galeriaImagem1,
+  galeriaImagem2,
+  galeriaImagem3,
+  galeriaImagem4,
+  galeriaImagem5,
+} from "@/lib/imagens";
 
 /**
- * Estrutura pronta para troca pelas fotos reais: basta substituir os arquivos
- * em src/assets mantendo os mesmos nomes, ou trocar os imports abaixo.
+ * Mosaico editorial: cada item define sua área no grid de 6 colunas.
+ * Para trocar por fotos reais basta editar src/lib/imagens.ts — a estrutura
+ * do mosaico continua igual.
  */
-const IMAGENS = [
-  { src: ferramentas, alt: "Ferramentas de barbeiro sobre bancada escura" },
-  { src: barba, alt: "Modelagem de barba com navalha" },
-  { src: corte, alt: "Acabamento de corte masculino degradê" },
-  { src: ambiente, alt: "Área de espera climatizada da barbearia" },
-] as const;
+interface ItemMosaico {
+  readonly imagem: ImagemSite;
+  /** Classes de posicionamento no grid (mobile-first). */
+  readonly area: string;
+}
+
+const MOSAICO: readonly ItemMosaico[] = [
+  {
+    imagem: galeriaImagem1,
+    area: "col-span-2 aspect-[4/3] md:col-span-4 md:row-span-2 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem2,
+    area: "col-span-1 aspect-[3/4] md:col-span-2 md:row-span-4 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem4,
+    area: "col-span-1 aspect-square md:col-span-2 md:row-span-2 md:aspect-auto",
+  },
+  {
+    imagem: galeriaImagem3,
+    area: "col-span-2 aspect-[16/9] md:col-span-2 md:row-span-2 md:aspect-auto",
+  },
+];
 
 export function SecaoGaleria() {
   return (
@@ -21,16 +44,24 @@ export function SecaoGaleria() {
         <p className="text-eyebrow">Galeria</p>
         <h2 className="mt-4 text-3xl font-semibold uppercase md:text-4xl">Ambiente e trabalho</h2>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-          {IMAGENS.map((imagem) => (
-            <figure key={imagem.alt} className="overflow-hidden border border-border/70">
+        <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-6 md:grid-rows-[repeat(4,minmax(0,150px))] md:gap-3">
+          {MOSAICO.map(({ imagem, area }) => (
+            <figure
+              key={imagem.src}
+              className={`group relative isolate overflow-hidden border border-border/70 bg-card ${area}`}
+            >
               <img
                 src={imagem.src}
                 alt={imagem.alt}
                 loading="lazy"
-                width={1024}
-                height={1024}
-                className="aspect-square size-full object-cover transition-transform duration-500 hover:scale-105"
+                decoding="async"
+                width={imagem.largura}
+                height={imagem.altura}
+                className="foto-tratada size-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div
+                aria-hidden
+                className="foto-overlay pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-40"
               />
             </figure>
           ))}
