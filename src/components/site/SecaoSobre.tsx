@@ -1,7 +1,5 @@
 import ambiente from "@/assets/galeria-ambiente.jpg";
 import ferramentas from "@/assets/galeria-ferramentas.jpg";
-import { NEGOCIO } from "@/lib/negocio";
-
 export function SecaoSobre() {
   return (
     <section id="sobre" className="border-t border-border/70 bg-background">
@@ -13,9 +11,9 @@ export function SecaoSobre() {
           </h2>
           <div className="mt-6 space-y-4 text-muted-foreground">
             <p>
-              A {NEGOCIO.nome} trabalha com uma ideia simples: o corte é o começo, não o fim. O que
-              sustenta a casa é o cuidado com o visual de cada cliente — leitura do formato do
-              rosto, tipo de cabelo, desenho da barba e acabamento feito sem pressa.
+              Aqui o trabalho parte de uma ideia simples: o corte é o começo, não o fim. O que
+              sustenta a casa é a leitura do formato do rosto, o tipo de cabelo, o desenho da barba
+              e o acabamento feito sem pressa.
             </p>
             <p>
               O padrão se repete em todo atendimento: pontualidade no horário marcado, ferramentas
@@ -46,8 +44,8 @@ export function SecaoSobre() {
                 Ambiente climatizado
               </h3>
               <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-                Loja na Estrada da Cachamorra com espaço limpo, climatizado e pensado para o cliente
-                ficar à vontade enquanto espera a vez.
+                Espaço limpo, climatizado e pensado para o cliente ficar à vontade enquanto espera a
+                vez.
               </p>
             </div>
           </article>
