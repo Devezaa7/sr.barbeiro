@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { STATUS_LABEL, formatarDataBR, formatarHora } from "@/lib/agenda";
+import { mensagemAmigavel } from "@/lib/erros";
 
 interface LinhaAdmin {
   id: string;
@@ -28,7 +29,13 @@ const ACOES: readonly { readonly status: string; readonly label: string }[] = [
 export function PainelAgendamentos() {
   const queryClient = useQueryClient();
 
-  const { data: agendamentos, isLoading } = useQuery({
+  const {
+    data: agendamentos,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ["admin-agendamentos"],
     queryFn: async (): Promise<LinhaAdmin[]> => {
       const { data, error } = await supabase
@@ -57,10 +64,22 @@ export function PainelAgendamentos() {
       void queryClient.invalidateQueries({ queryKey: ["admin-agendamentos"] });
       void queryClient.invalidateQueries({ queryKey: ["admin-indicadores"] });
     },
-    onError: () => toast.error("Não foi possível atualizar."),
+    onError: (erro: unknown) =>
+      toast.error(mensagemAmigavel(erro, "Não foi possível atualizar o agendamento.")),
   });
 
   if (isLoading) return <Skeleton className="h-48 w-full" />;
+
+  if (isError) {
+    return (
+      <div className="surface-panel p-6 text-sm">
+        <p className="text-muted-foreground">{mensagemAmigavel(error)}</p>
+        <Button className="mt-4" variant="outline" size="sm" onClick={() => void refetch()}>
+          Tentar novamente
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <ul className="grid gap-3">
@@ -85,6 +104,7 @@ export function PainelAgendamentos() {
                 key={acao.status}
                 size="sm"
                 variant="ghost"
+                disabled={atualizar.isPending}
                 onClick={() => atualizar.mutate({ id: item.id, status: acao.status })}
               >
                 {acao.label}
