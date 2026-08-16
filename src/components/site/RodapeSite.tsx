@@ -11,7 +11,9 @@ export function RodapeSite() {
           <p className="font-display text-lg font-semibold tracking-[0.18em] uppercase">
             {NEGOCIO.nome}
           </p>
-          <p className="mt-2 max-w-xs text-sm text-muted-foreground">{NEGOCIO.posicionamento}</p>
+          <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+            {NEGOCIO.enderecoCurto} · desde {NEGOCIO.desde}
+          </p>
         </div>
 
         <nav aria-label="Redes e páginas" className="flex flex-col gap-3 text-sm">
@@ -38,7 +40,7 @@ export function RodapeSite() {
       </div>
 
       <div className="border-t border-border/70 py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {NEGOCIO.nome}. Todos os direitos reservados.
+        © {new Date().getFullYear()}. Todos os direitos reservados.
       </div>
     </footer>
   );
