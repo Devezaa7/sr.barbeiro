@@ -45,15 +45,12 @@ export function SecaoContato() {
             </li>
           </ul>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8">
             <Button asChild>
               <a href={linkWhatsApp()} target="_blank" rel="noreferrer noopener">
                 <MessageCircle className="size-4" aria-hidden />
                 Falar no WhatsApp
               </a>
-            </Button>
-            <Button asChild variant="outline">
-              <a href={`tel:${NEGOCIO.telefoneE164}`}>Ligar agora</a>
             </Button>
           </div>
         </div>
