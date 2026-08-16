@@ -5,7 +5,6 @@
  */
 export const NEGOCIO = {
   nome: "Sr. Barbeiro",
-  posicionamento: "Mais que corte: cuidado com o visual.",
   desde: 2020,
   cidade: "Campo Grande, Rio de Janeiro",
   enderecoCompleto:
