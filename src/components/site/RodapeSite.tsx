@@ -12,7 +12,7 @@ export function RodapeSite() {
             {NEGOCIO.nome}
           </p>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-            {NEGOCIO.enderecoCurto} · desde {NEGOCIO.desde}
+            {NEGOCIO.enderecoCurto}
           </p>
         </div>
 
