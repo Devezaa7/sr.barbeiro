@@ -19,6 +19,7 @@ import {
   paraDataISO,
 } from "@/lib/agenda";
 import { agendaDoDiaQuery, barbeirosQuery, servicosQuery } from "@/lib/consultas";
+import { mensagemAmigavel } from "@/lib/erros";
 import { linkWhatsApp } from "@/lib/negocio";
 import { cn } from "@/lib/utils";
 
@@ -97,7 +98,12 @@ export function FluxoAgendamento() {
         if (error.code === "23P01") {
           throw new Error("Esse horário acabou de ser reservado. Escolha outro, por favor.");
         }
-        throw new Error("Não foi possível concluir o agendamento. Tente novamente.");
+        throw new Error(
+          mensagemAmigavel(
+            new Error(error.message),
+            "Não foi possível concluir o agendamento. Tente novamente.",
+          ),
+        );
       }
     },
     onSuccess: () => {
@@ -107,13 +113,7 @@ export function FluxoAgendamento() {
       toast.success("Agendamento registrado!");
     },
     onError: (erro: unknown) => {
-      const mensagem =
-        erro instanceof z.ZodError
-          ? (erro.issues[0]?.message ?? "Verifique os dados informados.")
-          : erro instanceof Error
-            ? erro.message
-            : "Erro inesperado.";
-      toast.error(mensagem);
+      toast.error(mensagemAmigavel(erro, "Não foi possível concluir o agendamento."));
       void queryClient.invalidateQueries({ queryKey: ["agenda-dia"] });
     },
   });
