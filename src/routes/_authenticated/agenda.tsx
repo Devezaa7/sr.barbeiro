@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSessao } from "@/hooks/useSessao";
 import { supabase } from "@/integrations/supabase/client";
 import { STATUS_LABEL, formatarDataBR, formatarHora, hojeISOBrasilia } from "@/lib/agenda";
+import { mensagemAmigavel } from "@/lib/erros";
 
 export const Route = createFileRoute("/_authenticated/agenda")({
   head: () => ({
@@ -90,7 +91,8 @@ function AgendaBarbeiro() {
       toast.success("Status atualizado.");
       void queryClient.invalidateQueries({ queryKey: ["agenda-barbeiro"] });
     },
-    onError: () => toast.error("Não foi possível atualizar o status."),
+    onError: (erro: unknown) =>
+      toast.error(mensagemAmigavel(erro, "Não foi possível atualizar o status.")),
   });
 
   const criarBloqueio = useMutation({
@@ -111,8 +113,7 @@ function AgendaBarbeiro() {
       setMotivo("");
       void queryClient.invalidateQueries({ queryKey: ["agenda-dia"] });
     },
-    onError: (erro) =>
-      toast.error(erro instanceof Error ? erro.message : "Não foi possível bloquear."),
+    onError: (erro: unknown) => toast.error(mensagemAmigavel(erro, "Não foi possível bloquear.")),
   });
 
   if (!barbeiro) {
