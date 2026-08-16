@@ -1,7 +1,5 @@
 import ambiente from "@/assets/galeria-ambiente.jpg";
 import ferramentas from "@/assets/galeria-ferramentas.jpg";
-import { NEGOCIO } from "@/lib/negocio";
-
 export function SecaoSobre() {
   return (
     <section id="sobre" className="border-t border-border/70 bg-background">
