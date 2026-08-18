@@ -1,0 +1,1 @@
+DELETE FROM public.agendamentos WHERE cliente_nome = 'Cliente Teste Auditoria';
