@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useSessao } from "@/hooks/useSessao";
 import { cn } from "@/lib/utils";
-import logoAsset from "@/assets/logo-sr-barbeiro.jpg.asset.json";
+import logoSrBarbeiro from "@/assets/logo-sr-barbeiro.jpg";
 
 const SECOES = [
   { href: "/#sobre", label: "Sobre" },
@@ -39,7 +39,7 @@ export function CabecalhoSite({ className, ...props }: CabecalhoSiteProps) {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2.5 leading-none">
           <img
-            src={logoAsset.url}
+            src={logoSrBarbeiro}
             alt="Logo Sr. Barbeiro"
             width={40}
             height={40}
