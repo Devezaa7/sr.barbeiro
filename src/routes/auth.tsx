@@ -292,24 +292,20 @@ function PaginaAuth() {
             </TabsContent>
           </Tabs>
 
-          {googleDisponivel && (
-            <>
-              <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
-                <span className="h-px flex-1 bg-border" />
-                ou
-                <span className="h-px flex-1 bg-border" />
-              </div>
+          <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
+            <span className="h-px flex-1 bg-border" />
+            ou
+            <span className="h-px flex-1 bg-border" />
+          </div>
 
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={entrarComGoogle}
-                disabled={ocupado}
-              >
-                Entrar com Google
-              </Button>
-            </>
-          )}
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={entrarComGoogle}
+            disabled={ocupado}
+          >
+            Entrar com Google
+          </Button>
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
