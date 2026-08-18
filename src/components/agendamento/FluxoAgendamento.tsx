@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ptBR } from "date-fns/locale";
 import { Check, Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -224,7 +225,7 @@ export function FluxoAgendamento() {
         <div className="grid gap-8 md:grid-cols-[auto_1fr]">
           <Calendar
             mode="single"
-            locale={undefined}
+            locale={ptBR}
             selected={dataISO ? new Date(`${dataISO}T12:00:00`) : undefined}
             onSelect={(data) => {
               setHora(null);
