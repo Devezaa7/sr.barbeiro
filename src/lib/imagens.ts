@@ -15,7 +15,7 @@ import galeriaBarbaArquivo from "@/assets/galeria-barba.jpg";
 import galeriaCorteArquivo from "@/assets/galeria-corte.jpg";
 import galeriaProdutosArquivo from "@/assets/galeria-produtos.jpg";
 import heroPosterArquivo from "@/assets/hero-barbearia.jpg";
-import heroVideoAsset from "@/assets/hero-barbearia.mp4.asset.json";
+import heroVideoArquivo from "@/assets/hero-barbearia.mp4";
 import sobreAcabamentoArquivo from "@/assets/sobre-acabamento.jpg";
 import sobreCouroArquivo from "@/assets/sobre-couro.jpg";
 import sobreFerramentasArquivo from "@/assets/sobre-ferramentas.jpg";
@@ -29,8 +29,8 @@ export interface ImagemSite {
   readonly altura: number;
 }
 
-/** Vídeo de fundo do hero (hospedado no CDN). */
-export const heroVideo = heroVideoAsset.url;
+/** Vídeo de fundo do hero (empacotado pelo bundler, versionado no repositório). */
+export const heroVideo: string = heroVideoArquivo;
 
 /** Poster exibido enquanto o vídeo do hero carrega ou quando o autoplay é bloqueado. */
 export const heroPoster: ImagemSite = {
