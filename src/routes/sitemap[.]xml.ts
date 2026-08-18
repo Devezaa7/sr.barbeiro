@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "https://smile-script-spark.lovable.app";
-
 interface SitemapEntry {
   path: string;
   changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
@@ -18,11 +16,14 @@ const entries: SitemapEntry[] = [
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: () => {
+      GET: ({ request }: { request: Request }) => {
+        // Usa a origem da requisição para que o sitemap sempre reflita o domínio
+        // realmente acessado (inclusive um domínio próprio), sem URLs fixas.
+        const baseUrl = new URL(request.url).origin;
         const urls = entries.map((entrada) =>
           [
             `  <url>`,
-            `    <loc>${BASE_URL}${entrada.path}</loc>`,
+            `    <loc>${baseUrl}${entrada.path}</loc>`,
             entrada.changefreq ? `    <changefreq>${entrada.changefreq}</changefreq>` : null,
             entrada.priority ? `    <priority>${entrada.priority}</priority>` : null,
             `  </url>`,
