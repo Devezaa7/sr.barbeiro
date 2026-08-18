@@ -12,6 +12,7 @@ import { useSessao } from "@/hooks/useSessao";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { NEGOCIO } from "@/lib/negocio";
+import { brokerOAuthDisponivel } from "@/lib/oauth";
 
 const TITULO = "Entrar | Sr. Barbeiro";
 const DESCRICAO =
@@ -62,6 +63,12 @@ function PaginaAuth() {
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
+  // Só habilita o Google onde o broker OAuth da hospedagem existe (ver src/lib/oauth.ts).
+  const [googleDisponivel, setGoogleDisponivel] = useState(false);
+
+  useEffect(() => {
+    setGoogleDisponivel(brokerOAuthDisponivel());
+  }, []);
 
   // Usuário já autenticado não deve ver o formulário.
   useEffect(() => {
@@ -267,15 +274,24 @@ function PaginaAuth() {
             </TabsContent>
           </Tabs>
 
-          <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
-            <span className="h-px flex-1 bg-border" />
-            ou
-            <span className="h-px flex-1 bg-border" />
-          </div>
+          {googleDisponivel && (
+            <>
+              <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
+                <span className="h-px flex-1 bg-border" />
+                ou
+                <span className="h-px flex-1 bg-border" />
+              </div>
 
-          <Button variant="outline" className="w-full" onClick={entrarComGoogle} disabled={ocupado}>
-            Entrar com Google
-          </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={entrarComGoogle}
+                disabled={ocupado}
+              >
+                Entrar com Google
+              </Button>
+            </>
+          )}
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
