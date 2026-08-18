@@ -4,6 +4,7 @@ import { PainelAgendamentos } from "@/components/painel/PainelAgendamentos";
 import { PainelBarbeiros } from "@/components/painel/PainelBarbeiros";
 import { PainelIndicadores } from "@/components/painel/PainelIndicadores";
 import { PainelServicos } from "@/components/painel/PainelServicos";
+import { PainelUsuarios } from "@/components/painel/PainelUsuarios";
 import { LayoutPainel } from "@/components/painel/LayoutPainel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { temPapel, useSessao } from "@/hooks/useSessao";
@@ -54,6 +55,7 @@ function PainelAdmin() {
           <TabsTrigger value="agendamentos">Agendamentos</TabsTrigger>
           <TabsTrigger value="servicos">Serviços</TabsTrigger>
           <TabsTrigger value="barbeiros">Equipe</TabsTrigger>
+          <TabsTrigger value="usuarios">Usuários</TabsTrigger>
           <TabsTrigger value="indicadores">Indicadores</TabsTrigger>
         </TabsList>
 
@@ -65,6 +67,9 @@ function PainelAdmin() {
         </TabsContent>
         <TabsContent value="barbeiros" className="mt-6">
           <PainelBarbeiros />
+        </TabsContent>
+        <TabsContent value="usuarios" className="mt-6">
+          <PainelUsuarios />
         </TabsContent>
         <TabsContent value="indicadores" className="mt-6">
           <PainelIndicadores />
