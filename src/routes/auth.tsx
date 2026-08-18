@@ -63,11 +63,13 @@ function PaginaAuth() {
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
-  // Só habilita o Google onde o broker OAuth da hospedagem existe (ver src/lib/oauth.ts).
-  const [googleDisponivel, setGoogleDisponivel] = useState(false);
+  // O Google está sempre disponível: no preview/domínio da plataforma via broker
+  // gerenciado, e em qualquer outro host (ex.: Vercel) via Supabase Auth.
+  // Ver src/lib/oauth.ts.
+  const [usarBroker, setUsarBroker] = useState(false);
 
   useEffect(() => {
-    setGoogleDisponivel(brokerOAuthDisponivel());
+    setUsarBroker(brokerOAuthDisponivel());
   }, []);
 
   // Usuário já autenticado não deve ver o formulário.
@@ -133,6 +135,22 @@ function PaginaAuth() {
 
   async function entrarComGoogle() {
     setOcupado(true);
+
+    // Fora dos domínios da plataforma o broker `/~oauth/initiate` não existe,
+    // então o OAuth é iniciado direto pelo Supabase Auth. O retorno cai em
+    // `/auth`, onde o efeito acima detecta a sessão e encaminha pelo papel.
+    if (!usarBroker) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth` },
+      });
+      if (error) {
+        toast.error("Não foi possível entrar com o Google agora.");
+        setOcupado(false);
+      }
+      return;
+    }
+
     const resultado = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
