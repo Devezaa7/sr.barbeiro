@@ -1,12 +1,15 @@
 /**
- * O login social gerenciado usa o broker OAuth da plataforma de hospedagem,
- * exposto no path `/~oauth/initiate` do próprio domínio. Esse path é servido
- * apenas pelos domínios da plataforma (preview e `*.lovable.app`) e pelo
- * ambiente local; em qualquer outro host (ex.: deploy na Vercel) a chamada
- * resulta em 404.
+ * Existem dois caminhos possíveis para o login com Google:
  *
- * Por isso o botão de Google só é oferecido onde o broker realmente existe.
- * Nos demais domínios o acesso continua disponível por e-mail e senha.
+ * 1. Broker OAuth gerenciado pela hospedagem, exposto em `/~oauth/initiate` do
+ *    próprio domínio. Esse path só existe no preview e em `*.lovable.app`; em
+ *    qualquer outro host (ex.: Vercel) ele retorna 404.
+ * 2. Fluxo oficial do Supabase Auth (`supabase.auth.signInWithOAuth`), que
+ *    redireciona para o endpoint `/auth/v1/authorize` do próprio backend e
+ *    depende apenas do provedor Google habilitado lá.
+ *
+ * Esta função decide qual caminho usar: o broker onde ele realmente existe, o
+ * fluxo do Supabase em todos os outros domínios.
  */
 export function brokerOAuthDisponivel(): boolean {
   if (typeof window === "undefined") return false;
