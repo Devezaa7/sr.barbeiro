@@ -39,8 +39,8 @@ export function CabecalhoSite({ className, ...props }: CabecalhoSiteProps) {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2.5 leading-none">
           <img
-            src={logoMarca.url}
-            alt="Logo Sr. Barbeiro"
+            src={logoMarca.src}
+            alt={logoMarca.alt}
             width={40}
             height={40}
             className="size-9 rounded-sm object-cover md:size-10"

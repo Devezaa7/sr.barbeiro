@@ -1,22 +1,10 @@
-/**
- * Registro central das imagens do site.
- *
- * Para trocar por fotos reais da barbearia no futuro: substitua o arquivo em
- * src/assets mantendo o mesmo nome (ou aponte o import para o novo arquivo) e
- * ajuste `largura`/`altura` para as dimensões reais. Nenhuma seção precisa ser
- * reescrita — todas consomem estas variáveis.
- *
- * Direção visual obrigatória para qualquer substituição:
- * ambiente escuro, luz pontual quente (âmbar), contraste alto, sem fotos claras
- * ou "estouradas", enquadramento fechado em detalhes do ofício.
- */
 import galeriaAmbienteArquivo from "@/assets/galeria-ambiente.jpg";
 import galeriaBarbaArquivo from "@/assets/galeria-barba.jpg";
 import galeriaCorteArquivo from "@/assets/galeria-corte.jpg";
 import galeriaProdutosArquivo from "@/assets/galeria-produtos.jpg";
 import heroPosterArquivo from "@/assets/hero-barbearia.jpg";
 import heroVideoArquivo from "@/assets/hero-barbearia.mp4";
-import logoSrBarbeiroArquivo from "@/assets/logo.png.asset.json";
+import logoSrBarbeiroArquivo from "@/assets/logo-sr-barbeiro.png";
 import sobreAcabamentoArquivo from "@/assets/sobre-acabamento.jpg";
 import sobreCouroArquivo from "@/assets/sobre-couro.jpg";
 import sobreFerramentasArquivo from "@/assets/sobre-ferramentas.jpg";
@@ -31,7 +19,10 @@ export interface ImagemSite {
 }
 
 /** Logo oficial da barbearia. */
-export const logoMarca = logoSrBarbeiroArquivo;
+export const logoMarca = {
+  src: logoSrBarbeiroArquivo,
+  alt: "Logo Sr. Barbeiro",
+};
 
 /** Vídeo de fundo do hero (empacotado pelo bundler, versionado no repositório). */
 export const heroVideo: string = heroVideoArquivo;
