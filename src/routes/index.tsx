@@ -33,17 +33,13 @@ function Index() {
   return (
     <>
       <div className="sr-only">
-        'A logo não está aparecendo em nenhum lugar do site quando publicado no domínio da Vercel (https://sr-barbeiro.vercel.app/), tanto na página principal quanto na página de login. No lugar da imagem, aparece apenas o texto alternativo "Logo Sr. Barbeiro" com o ícone de imagem quebrada, e o console mostra um erro 404 ao tentar carregar o arquivo.
+        'Você identificou que a logo estava referenciada de um jeito que não resolvia corretamente fora do ambiente de preview do Lovable, e corrigiu convertendo para asset local.
 
-        Investigue:
+Faça uma varredura em todas as outras imagens do site (galeria, imagens da seção "A barbearia", vídeo do hero, avatares de barbeiros, e qualquer outra imagem usada no projeto) para confirmar se alguma delas está com o mesmo tipo de problema: referenciada por um caminho ou manifesto que funciona apenas no preview do Lovable, mas quebraria em outro ambiente de publicação como a Vercel.
 
-        Onde exatamente o arquivo da logo está armazenado no projeto (pasta public, importado como asset, ou referenciado por uma URL externa/absoluta).
+Corrija todas as que apresentarem esse mesmo risco, convertendo para asset local importado no projeto, do mesmo jeito que foi feito com a logo.
 
-        Se o caminho usado no código para referenciar a logo é um caminho relativo que funciona apenas no ambiente de preview do Lovable, mas não é resolvido corretamente quando o build é publicado na Vercel.
-
-        Corrija a referência para que o caminho do arquivo funcione corretamente em qualquer ambiente de publicação, incluindo a Vercel, preferencialmente importando a imagem como asset do projeto para que o processo de build gere o caminho correto automaticamente, em vez de usar uma URL fixa.
-
-        Depois de corrigir, gere um novo build e teste diretamente no domínio da Vercel (não apenas no preview do Lovable) para confirmar que a logo aparece corretamente na página principal, no cabeçalho, no rodapé e na página de login.' (on element 'body' at '/src/routes/index.tsx:1')
+Depois de aplicar as correções necessárias, faça um novo deploy e liste, uma por uma, todas as imagens do site que você conferiu, confirmando quais já estavam corretas e quais precisaram de correção.' (on element 'body' at '/src/routes/index.tsx:1')
       </div>
     <div className="min-h-screen bg-background">
       <CabecalhoSite />
