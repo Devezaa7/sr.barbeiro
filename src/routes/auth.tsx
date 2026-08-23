@@ -77,9 +77,10 @@ function PaginaAuth() {
   const { user, papeis, carregando } = useSessao();
   const [ocupado, setOcupado] = useState(false);
   const [abaAtiva, setAbaAtiva] = useState<string>("entrar");
-  const forca = calcularForcaSenha(senha);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  
+  const forca = calcularForcaSenha(senha);
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   // Autenticação apenas por e-mail e senha.
