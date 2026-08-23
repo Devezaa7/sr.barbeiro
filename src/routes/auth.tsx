@@ -51,6 +51,9 @@ function mensagemDeErro(mensagem: string): string {
   if (normalizada.includes("email not confirmed")) {
     return "Confirme seu e-mail pelo link que enviamos antes de entrar.";
   }
+  if (normalizada.includes("password is known to be weak")) {
+    return "Senha muito fraca. Tente uma senha mais complexa com letras, números e símbolos.";
+  }
   return "Não foi possível concluir. Tente novamente em instantes.";
 }
 
