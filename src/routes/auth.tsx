@@ -12,6 +12,7 @@ import { useSessao } from "@/hooks/useSessao";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { NEGOCIO } from "@/lib/negocio";
+import { logoMarca } from "@/lib/imagens";
 
 const TITULO = "Entrar | Sr. Barbeiro";
 const DESCRICAO =
@@ -168,7 +169,12 @@ function PaginaAuth() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
       <div className="w-full max-w-md">
-        <a href="/" className="block text-center">
+        <a href="/" className="flex flex-col items-center text-center">
+          <img 
+            src={logoMarca.src} 
+            alt={logoMarca.alt} 
+            className="mb-4 size-20 object-contain brightness-110 contrast-125"
+          />
           <span className="font-display text-xl font-semibold tracking-[0.2em] uppercase">
             {NEGOCIO.nome}
           </span>
