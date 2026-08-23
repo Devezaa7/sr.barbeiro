@@ -57,10 +57,27 @@ function mensagemDeErro(mensagem: string): string {
   return "Não foi possível concluir. Tente novamente em instantes.";
 }
 
+function calcularForcaSenha(senha: string): { label: string; cor: string; percentual: number } {
+  if (!senha) return { label: "", cor: "bg-muted", percentual: 0 };
+  
+  let pontos = 0;
+  if (senha.length >= 8) pontos += 1;
+  if (/[A-Z]/.test(senha)) pontos += 1;
+  if (/[0-9]/.test(senha)) pontos += 1;
+  if (/[^A-Za-z0-9]/.test(senha)) pontos += 1;
+  
+  if (senha.length < 6) return { label: "Muito curta", cor: "bg-destructive", percentual: 25 };
+  if (pontos <= 1) return { label: "Fraca", cor: "bg-destructive", percentual: 33 };
+  if (pontos === 2) return { label: "Média", cor: "bg-yellow-500", percentual: 66 };
+  return { label: "Forte", cor: "bg-green-500", percentual: 100 };
+}
+
 function PaginaAuth() {
   const navigate = useNavigate();
   const { user, papeis, carregando } = useSessao();
   const [ocupado, setOcupado] = useState(false);
+  const [abaAtiva, setAbaAtiva] = useState<string>("entrar");
+  const forca = calcularForcaSenha(senha);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
@@ -157,7 +174,7 @@ function PaginaAuth() {
         </a>
 
         <div className="surface-panel mt-8 p-6">
-          <Tabs defaultValue="entrar">
+          <Tabs value={abaAtiva} onValueChange={setAbaAtiva}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="entrar">Entrar</TabsTrigger>
               <TabsTrigger value="criar">Criar conta</TabsTrigger>
@@ -249,6 +266,22 @@ function PaginaAuth() {
                     maxLength={72}
                     required
                   />
+                  {senha && (
+                    <div className="space-y-1.5 mt-1">
+                      <div className="flex h-1 overflow-hidden rounded-full bg-muted">
+                        <div 
+                          className={`h-full transition-all duration-300 ${forca.cor}`}
+                          style={{ width: `${forca.percentual}%` }}
+                        />
+                      </div>
+                      <p className={`text-[10px] font-medium uppercase tracking-wider ${forca.label === "Forte" ? "text-green-500" : forca.label === "Média" ? "text-yellow-500" : "text-destructive"}`}>
+                        Senha {forca.label}
+                      </p>
+                    </div>
+                  )}
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Dica: Use ao menos 8 caracteres, mesclando letras, números e símbolos. Evite sequências óbvias (ex: 123456).
+                  </p>
                 </div>
                 <Button type="submit" disabled={ocupado}>
                   {ocupado && <Loader2 className="size-4 animate-spin" aria-hidden />}
