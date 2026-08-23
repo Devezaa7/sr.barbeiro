@@ -31,6 +31,20 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
+    <>
+      <div className="sr-only">
+        'A logo não está aparecendo em nenhum lugar do site quando publicado no domínio da Vercel (https://sr-barbeiro.vercel.app/), tanto na página principal quanto na página de login. No lugar da imagem, aparece apenas o texto alternativo "Logo Sr. Barbeiro" com o ícone de imagem quebrada, e o console mostra um erro 404 ao tentar carregar o arquivo.
+
+        Investigue:
+
+        Onde exatamente o arquivo da logo está armazenado no projeto (pasta public, importado como asset, ou referenciado por uma URL externa/absoluta).
+
+        Se o caminho usado no código para referenciar a logo é um caminho relativo que funciona apenas no ambiente de preview do Lovable, mas não é resolvido corretamente quando o build é publicado na Vercel.
+
+        Corrija a referência para que o caminho do arquivo funcione corretamente em qualquer ambiente de publicação, incluindo a Vercel, preferencialmente importando a imagem como asset do projeto para que o processo de build gere o caminho correto automaticamente, em vez de usar uma URL fixa.
+
+        Depois de corrigir, gere um novo build e teste diretamente no domínio da Vercel (não apenas no preview do Lovable) para confirmar que a logo aparece corretamente na página principal, no cabeçalho, no rodapé e na página de login.' (on element 'body' at '/src/routes/index.tsx:1')
+      </div>
     <div className="min-h-screen bg-background">
       <CabecalhoSite />
       <main>
@@ -58,5 +72,6 @@ function Index() {
       <RodapeSite />
       <BotaoWhatsAppFixo />
     </div>
+    </>
   );
 }

@@ -10,8 +10,8 @@ export function RodapeSite() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-12 md:flex-row md:items-start md:justify-between md:px-6">
         <div className="flex items-center gap-3">
           <img
-            src={logoMarca.url}
-            alt=""
+            src={logoMarca.src}
+            alt={logoMarca.alt}
             width={32}
             height={32}
             className="size-8 rounded-sm object-cover"
