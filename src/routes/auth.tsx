@@ -12,7 +12,6 @@ import { useSessao } from "@/hooks/useSessao";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { NEGOCIO } from "@/lib/negocio";
-import { brokerOAuthDisponivel } from "@/lib/oauth";
 
 const TITULO = "Entrar | Sr. Barbeiro";
 const DESCRICAO =
@@ -63,14 +62,7 @@ function PaginaAuth() {
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
-  // O Google está sempre disponível: no preview/domínio da plataforma via broker
-  // gerenciado, e em qualquer outro host (ex.: Vercel) via Supabase Auth.
-  // Ver src/lib/oauth.ts.
-  const [usarBroker, setUsarBroker] = useState(false);
-
-  useEffect(() => {
-    setUsarBroker(brokerOAuthDisponivel());
-  }, []);
+  // Autenticação apenas por e-mail e senha.
 
   // Usuário já autenticado não deve ver o formulário.
   useEffect(() => {
@@ -133,35 +125,6 @@ function PaginaAuth() {
     }
   }
 
-  async function entrarComGoogle() {
-    setOcupado(true);
-
-    // Fora dos domínios da plataforma o broker `/~oauth/initiate` não existe,
-    // então o OAuth é iniciado direto pelo Supabase Auth. O retorno cai em
-    // `/auth`, onde o efeito acima detecta a sessão e encaminha pelo papel.
-    if (!usarBroker) {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: `${window.location.origin}/auth` },
-      });
-      if (error) {
-        toast.error("Não foi possível entrar com o Google agora.");
-        setOcupado(false);
-      }
-      return;
-    }
-
-    const resultado = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (resultado.error) {
-      toast.error("Não foi possível entrar com o Google agora.");
-      setOcupado(false);
-      return;
-    }
-    if (resultado.redirected) return;
-    void navigate({ to: "/minha-conta", replace: true });
-  }
 
   async function recuperarSenha() {
     const parse = z.string().trim().email().safeParse(email);
@@ -292,20 +255,6 @@ function PaginaAuth() {
             </TabsContent>
           </Tabs>
 
-          <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
-            <span className="h-px flex-1 bg-border" />
-            ou
-            <span className="h-px flex-1 bg-border" />
-          </div>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={entrarComGoogle}
-            disabled={ocupado}
-          >
-            Entrar com Google
-          </Button>
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
