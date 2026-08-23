@@ -72,5 +72,6 @@ function Index() {
       <RodapeSite />
       <BotaoWhatsAppFixo />
     </div>
+    </>
   );
 }
