@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -80,6 +80,7 @@ function PaginaAuth() {
   const [abaAtiva, setAbaAtiva] = useState<string>("entrar");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   
   const forca = calcularForcaSenha(senha);
   const [nome, setNome] = useState("");
@@ -203,15 +204,26 @@ function PaginaAuth() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="login-senha">Senha</Label>
-                  <Input
-                    id="login-senha"
-                    type="password"
-                    value={senha}
-                    onChange={(evento) => setSenha(evento.target.value)}
-                    autoComplete="current-password"
-                    maxLength={72}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="login-senha"
+                      type={mostrarSenha ? "text" : "password"}
+                      value={senha}
+                      onChange={(evento) => setSenha(evento.target.value)}
+                      autoComplete="current-password"
+                      maxLength={72}
+                      required
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {mostrarSenha ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
                 <Button type="submit" disabled={ocupado}>
                   {ocupado && <Loader2 className="size-4 animate-spin" aria-hidden />}
@@ -264,15 +276,26 @@ function PaginaAuth() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="cad-senha">Senha</Label>
-                  <Input
-                    id="cad-senha"
-                    type="password"
-                    value={senha}
-                    onChange={(evento) => setSenha(evento.target.value)}
-                    autoComplete="new-password"
-                    maxLength={72}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="cad-senha"
+                      type={mostrarSenha ? "text" : "password"}
+                      value={senha}
+                      onChange={(evento) => setSenha(evento.target.value)}
+                      autoComplete="new-password"
+                      maxLength={72}
+                      required
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {mostrarSenha ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                   {senha && (
                     <div className="space-y-1.5 mt-1">
                       <div className="flex h-1 overflow-hidden rounded-full bg-muted">
