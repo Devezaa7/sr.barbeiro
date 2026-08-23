@@ -90,6 +90,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Sr. Barbeiro" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://smile-script-spark.lovable.app/og-image.png" },
+      { name: "twitter:image", content: "https://smile-script-spark.lovable.app/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

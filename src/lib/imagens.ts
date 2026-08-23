@@ -16,6 +16,7 @@ import galeriaCorteArquivo from "@/assets/galeria-corte.jpg";
 import galeriaProdutosArquivo from "@/assets/galeria-produtos.jpg";
 import heroPosterArquivo from "@/assets/hero-barbearia.jpg";
 import heroVideoArquivo from "@/assets/hero-barbearia.mp4";
+import logoSrBarbeiroArquivo from "@/assets/logo.png.asset.json";
 import sobreAcabamentoArquivo from "@/assets/sobre-acabamento.jpg";
 import sobreCouroArquivo from "@/assets/sobre-couro.jpg";
 import sobreFerramentasArquivo from "@/assets/sobre-ferramentas.jpg";
@@ -28,6 +29,9 @@ export interface ImagemSite {
   readonly largura: number;
   readonly altura: number;
 }
+
+/** Logo oficial da barbearia. */
+export const logoMarca = logoSrBarbeiroArquivo;
 
 /** Vídeo de fundo do hero (empacotado pelo bundler, versionado no repositório). */
 export const heroVideo: string = heroVideoArquivo;
