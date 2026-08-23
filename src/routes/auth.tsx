@@ -171,8 +171,8 @@ function PaginaAuth() {
       <div className="w-full max-w-md">
         <a href="/" className="flex flex-col items-center text-center">
           <img 
-            src={logoMarca.src} 
-            alt={logoMarca.alt} 
+            src={logoMarca.url} 
+            alt="Logo Sr. Barbeiro" 
             className="mb-4 size-20 object-contain brightness-110 contrast-125"
           />
           <span className="font-display text-xl font-semibold tracking-[0.2em] uppercase">
