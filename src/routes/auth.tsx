@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSessao } from "@/hooks/useSessao";
-import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { NEGOCIO } from "@/lib/negocio";
 import { logoMarca } from "@/lib/imagens";
@@ -51,6 +50,12 @@ function mensagemDeErro(mensagem: string): string {
   }
   if (normalizada.includes("email not confirmed")) {
     return "Confirme seu e-mail pelo link que enviamos antes de entrar.";
+  }
+  if (normalizada.includes("email address not authorized")) {
+    return "O provedor de testes do Supabase só envia mensagens para endereços autorizados. Configure um SMTP próprio para enviar aos usuários reais.";
+  }
+  if (normalizada.includes("redirect") && normalizada.includes("not allowed")) {
+    return "A URL desta aplicação não está autorizada no Supabase. Confira Authentication > URL Configuration.";
   }
   if (normalizada.includes("password is known to be weak")) {
     return "Senha muito fraca. Tente uma senha mais complexa com letras, números e símbolos.";
@@ -124,12 +129,17 @@ function PaginaAuth() {
     setOcupado(true);
     try {
       const dados = credenciaisSchema.parse({ email, senha });
-      if (nome.trim().length < 3) throw new z.ZodError([]);
+      if (nome.trim().length < 3) {
+        toast.error("Informe seu nome completo.");
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email: dados.email,
         password: dados.senha,
         options: {
-          emailRedirectTo: window.location.origin,
+          // O link de confirmação retorna para esta rota, não para a raiz ou localhost configurado por padrão.
+          emailRedirectTo: `${window.location.origin}/auth`,
           data: { nome: nome.trim(), telefone: telefone.trim() },
         },
       });
@@ -148,23 +158,29 @@ function PaginaAuth() {
     }
   }
 
-
   async function recuperarSenha() {
     const parse = z.string().trim().email().safeParse(email);
     if (!parse.success) {
       toast.error("Digite seu e-mail no campo acima para receber o link de redefinição.");
       return;
     }
+
     setOcupado(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(parse.data, {
-      redirectTo: `${window.location.origin}/redefinir-senha`,
-    });
-    setOcupado(false);
-    toast[error ? "error" : "success"](
-      error
-        ? mensagemDeErro(error.message)
-        : "Enviamos um link de redefinição para o seu e-mail.",
-    );
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(parse.data, {
+        redirectTo: `${window.location.origin}/redefinir-senha`,
+      });
+
+      toast[error ? "error" : "success"](
+        error
+          ? mensagemDeErro(error.message)
+          : "Enviamos um link de redefinição para o seu e-mail.",
+      );
+    } catch (erro) {
+      toast.error(mensagemDeErro(erro instanceof Error ? erro.message : ""));
+    } finally {
+      setOcupado(false);
+    }
   }
 
   return (
@@ -233,6 +249,7 @@ function PaginaAuth() {
                   type="button"
                   onClick={recuperarSenha}
                   className="text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                  disabled={ocupado}
                 >
                   Esqueci minha senha
                 </button>

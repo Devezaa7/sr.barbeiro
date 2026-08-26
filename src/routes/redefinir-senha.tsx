@@ -45,16 +45,22 @@ function RedefinirSenha() {
     }
 
     setOcupado(true);
-    const { error } = await supabase.auth.updateUser({ password: senha });
-    setOcupado(false);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: senha });
 
-    if (error) {
-      toast.error("Link expirado ou inválido. Solicite a redefinição novamente.");
-      return;
+      if (error) {
+        toast.error("Link expirado ou inválido. Solicite a redefinição novamente.");
+        return;
+      }
+
+      toast.success("Senha atualizada. Faça login com a nova senha.");
+      await supabase.auth.signOut();
+      void navigate({ to: "/auth", replace: true });
+    } catch {
+      toast.error("Não foi possível atualizar a senha. Solicite um novo link.");
+    } finally {
+      setOcupado(false);
     }
-    toast.success("Senha atualizada. Faça login com a nova senha.");
-    await supabase.auth.signOut();
-    void navigate({ to: "/auth", replace: true });
   }
 
   return (
