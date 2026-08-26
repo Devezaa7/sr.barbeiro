@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { PainelAgendamentos } from "@/components/painel/PainelAgendamentos";
 import { PainelBarbeiros } from "@/components/painel/PainelBarbeiros";
@@ -8,12 +8,34 @@ import { PainelUsuarios } from "@/components/painel/PainelUsuarios";
 import { LayoutPainel } from "@/components/painel/LayoutPainel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { temPapel, useSessao } from "@/hooks/useSessao";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  ssr: false,
+  beforeLoad: async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      throw redirect({ to: "/auth" });
+    }
+
+    const { data: isAdmin, error: roleError } = await supabase.rpc("is_admin");
+    if (roleError || !isAdmin) {
+      throw redirect({ to: "/minha-conta" });
+    }
+
+    return { user };
+  },
   head: () => ({
     meta: [
       { title: "Painel administrativo | Sr. Barbeiro" },
-      { name: "description", content: "Gestão de agendamentos, serviços e equipe da Sr. Barbeiro." },
+      {
+        name: "description",
+        content: "Gestão de agendamentos, serviços e equipe da Sr. Barbeiro.",
+      },
       { property: "og:title", content: "Painel administrativo | Sr. Barbeiro" },
       { property: "og:description", content: "Gestão completa da barbearia." },
       { property: "og:type", content: "website" },
@@ -25,8 +47,6 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 function PainelAdmin() {
   const { papeis, carregando } = useSessao();
-
-  // A autorização real está nas policies do banco; aqui apenas ajustamos a UI.
   const ehAdmin = temPapel(papeis, "administrador");
 
   if (carregando) {
