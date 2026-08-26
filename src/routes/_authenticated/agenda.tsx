@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { abrirWhatsAppConfirmacao } from "@/lib/whatsapp";
 import { LayoutPainel } from "@/components/painel/LayoutPainel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -80,16 +81,30 @@ function AgendaBarbeiro() {
   });
 
   const atualizarStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({ atendimento, status }: { atendimento: Atendimento; status: string }) => {
       const { error } = await supabase
         .from("agendamentos")
         .update({ status: status as never })
-        .eq("id", id);
+        .eq("id", atendimento.id);
       if (error) throw new Error(error.message);
+      return { atendimento, status };
     },
-    onSuccess: () => {
+    onSuccess: ({ atendimento, status }) => {
       toast.success("Status atualizado.");
       void queryClient.invalidateQueries({ queryKey: ["agenda-barbeiro"] });
+
+      if (status === "confirmado") {
+        const abriuWhatsApp = abrirWhatsAppConfirmacao({
+          telefone: atendimento.cliente_telefone,
+          nome: atendimento.cliente_nome,
+          data: atendimento.data,
+          hora: atendimento.hora_inicio,
+        });
+
+        if (!abriuWhatsApp) {
+          toast.warning("Não foi possível abrir o WhatsApp para este telefone.");
+        }
+      }
     },
     onError: (erro: unknown) =>
       toast.error(mensagemAmigavel(erro, "Não foi possível atualizar o status.")),
@@ -151,17 +166,31 @@ function AgendaBarbeiro() {
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline">{STATUS_LABEL[item.status] ?? item.status}</Badge>
+              {item.status !== "confirmado" && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={atualizarStatus.isPending}
+                  onClick={() => atualizarStatus.mutate({ atendimento: item, status: "confirmado" })}
+                >
+                  Confirmar
+                </Button>
+              )}
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => atualizarStatus.mutate({ id: item.id, status: "concluido" })}
+                disabled={atualizarStatus.isPending}
+                onClick={() => atualizarStatus.mutate({ atendimento: item, status: "concluido" })}
               >
                 Concluído
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => atualizarStatus.mutate({ id: item.id, status: "nao_compareceu" })}
+                disabled={atualizarStatus.isPending}
+                onClick={() =>
+                  atualizarStatus.mutate({ atendimento: item, status: "nao_compareceu" })
+                }
               >
                 Não compareceu
               </Button>

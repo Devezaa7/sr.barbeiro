@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { abrirWhatsAppConfirmacao } from "@/lib/whatsapp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -52,17 +53,33 @@ export function PainelAgendamentos() {
   });
 
   const atualizar = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({ item, status }: { item: LinhaAdmin; status: string }) => {
       const { error } = await supabase
         .from("agendamentos")
         .update({ status: status as never })
-        .eq("id", id);
+        .eq("id", item.id);
       if (error) throw new Error(error.message);
+
+      return { item, status };
     },
-    onSuccess: () => {
+    onSuccess: ({ item, status }) => {
       toast.success("Agendamento atualizado.");
       void queryClient.invalidateQueries({ queryKey: ["admin-agendamentos"] });
       void queryClient.invalidateQueries({ queryKey: ["admin-indicadores"] });
+
+      // O WhatsApp só é aberto depois que a confirmação foi salva no Supabase.
+      if (status === "confirmado") {
+        const abriuWhatsApp = abrirWhatsAppConfirmacao({
+          telefone: item.cliente_telefone,
+          nome: item.cliente_nome,
+          data: item.data,
+          hora: item.hora_inicio,
+        });
+
+        if (!abriuWhatsApp) {
+          toast.warning("Não foi possível abrir o WhatsApp para este telefone.");
+        }
+      }
     },
     onError: (erro: unknown) =>
       toast.error(mensagemAmigavel(erro, "Não foi possível atualizar o agendamento.")),
@@ -105,7 +122,7 @@ export function PainelAgendamentos() {
                 size="sm"
                 variant="ghost"
                 disabled={atualizar.isPending}
-                onClick={() => atualizar.mutate({ id: item.id, status: acao.status })}
+                onClick={() => atualizar.mutate({ item, status: acao.status })}
               >
                 {acao.label}
               </Button>
