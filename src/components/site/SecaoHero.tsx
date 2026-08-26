@@ -20,7 +20,11 @@ export function SecaoHero() {
   }, []);
 
   return (
-    <section className="relative isolate overflow-hidden">
+    <section
+      className="relative isolate overflow-hidden bg-cover bg-center"
+      // Fallback: se o vídeo do CDN falhar (404/rede), o poster segue visível.
+      style={{ backgroundImage: `url(${heroPoster.src})` }}
+    >
       <video
         ref={refVideo}
         src={heroVideo}

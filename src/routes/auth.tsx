@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -12,6 +12,7 @@ import { useSessao } from "@/hooks/useSessao";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { NEGOCIO } from "@/lib/negocio";
+import { logoMarca } from "@/lib/imagens";
 
 const TITULO = "Entrar | Sr. Barbeiro";
 const DESCRICAO =
@@ -51,17 +52,40 @@ function mensagemDeErro(mensagem: string): string {
   if (normalizada.includes("email not confirmed")) {
     return "Confirme seu e-mail pelo link que enviamos antes de entrar.";
   }
+  if (normalizada.includes("password is known to be weak")) {
+    return "Senha muito fraca. Tente uma senha mais complexa com letras, números e símbolos.";
+  }
   return "Não foi possível concluir. Tente novamente em instantes.";
+}
+
+function calcularForcaSenha(senha: string): { label: string; cor: string; percentual: number } {
+  if (!senha) return { label: "", cor: "bg-muted", percentual: 0 };
+  
+  let pontos = 0;
+  if (senha.length >= 8) pontos += 1;
+  if (/[A-Z]/.test(senha)) pontos += 1;
+  if (/[0-9]/.test(senha)) pontos += 1;
+  if (/[^A-Za-z0-9]/.test(senha)) pontos += 1;
+  
+  if (senha.length < 6) return { label: "Muito curta", cor: "bg-destructive", percentual: 25 };
+  if (pontos <= 1) return { label: "Fraca", cor: "bg-destructive", percentual: 33 };
+  if (pontos === 2) return { label: "Média", cor: "bg-yellow-500", percentual: 66 };
+  return { label: "Forte", cor: "bg-green-500", percentual: 100 };
 }
 
 function PaginaAuth() {
   const navigate = useNavigate();
   const { user, papeis, carregando } = useSessao();
   const [ocupado, setOcupado] = useState(false);
+  const [abaAtiva, setAbaAtiva] = useState<string>("entrar");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  
+  const forca = calcularForcaSenha(senha);
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
+  // Autenticação apenas por e-mail e senha.
 
   // Usuário já autenticado não deve ver o formulário.
   useEffect(() => {
@@ -124,19 +148,6 @@ function PaginaAuth() {
     }
   }
 
-  async function entrarComGoogle() {
-    setOcupado(true);
-    const resultado = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (resultado.error) {
-      toast.error("Não foi possível entrar com o Google agora.");
-      setOcupado(false);
-      return;
-    }
-    if (resultado.redirected) return;
-    void navigate({ to: "/minha-conta", replace: true });
-  }
 
   async function recuperarSenha() {
     const parse = z.string().trim().email().safeParse(email);
@@ -159,14 +170,19 @@ function PaginaAuth() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
       <div className="w-full max-w-md">
-        <a href="/" className="block text-center">
+        <a href="/" className="flex flex-col items-center text-center">
+          <img 
+            src={logoMarca.src} 
+            alt={logoMarca.alt}
+            className="mb-4 size-20 object-contain brightness-110 contrast-125"
+          />
           <span className="font-display text-xl font-semibold tracking-[0.2em] uppercase">
             {NEGOCIO.nome}
           </span>
         </a>
 
         <div className="surface-panel mt-8 p-6">
-          <Tabs defaultValue="entrar">
+          <Tabs value={abaAtiva} onValueChange={setAbaAtiva}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="entrar">Entrar</TabsTrigger>
               <TabsTrigger value="criar">Criar conta</TabsTrigger>
@@ -188,15 +204,26 @@ function PaginaAuth() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="login-senha">Senha</Label>
-                  <Input
-                    id="login-senha"
-                    type="password"
-                    value={senha}
-                    onChange={(evento) => setSenha(evento.target.value)}
-                    autoComplete="current-password"
-                    maxLength={72}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="login-senha"
+                      type={mostrarSenha ? "text" : "password"}
+                      value={senha}
+                      onChange={(evento) => setSenha(evento.target.value)}
+                      autoComplete="current-password"
+                      maxLength={72}
+                      required
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {mostrarSenha ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
                 <Button type="submit" disabled={ocupado}>
                   {ocupado && <Loader2 className="size-4 animate-spin" aria-hidden />}
@@ -249,15 +276,42 @@ function PaginaAuth() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="cad-senha">Senha</Label>
-                  <Input
-                    id="cad-senha"
-                    type="password"
-                    value={senha}
-                    onChange={(evento) => setSenha(evento.target.value)}
-                    autoComplete="new-password"
-                    maxLength={72}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="cad-senha"
+                      type={mostrarSenha ? "text" : "password"}
+                      value={senha}
+                      onChange={(evento) => setSenha(evento.target.value)}
+                      autoComplete="new-password"
+                      maxLength={72}
+                      required
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {mostrarSenha ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
+                  {senha && (
+                    <div className="space-y-1.5 mt-1">
+                      <div className="flex h-1 overflow-hidden rounded-full bg-muted">
+                        <div 
+                          className={`h-full transition-all duration-300 ${forca.cor}`}
+                          style={{ width: `${forca.percentual}%` }}
+                        />
+                      </div>
+                      <p className={`text-[10px] font-medium uppercase tracking-wider ${forca.label === "Forte" ? "text-green-500" : forca.label === "Média" ? "text-yellow-500" : "text-destructive"}`}>
+                        Senha {forca.label}
+                      </p>
+                    </div>
+                  )}
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Dica: Use ao menos 8 caracteres, mesclando letras, números e símbolos. Evite sequências óbvias (ex: 123456).
+                  </p>
                 </div>
                 <Button type="submit" disabled={ocupado}>
                   {ocupado && <Loader2 className="size-4 animate-spin" aria-hidden />}
@@ -267,15 +321,6 @@ function PaginaAuth() {
             </TabsContent>
           </Tabs>
 
-          <div className="my-6 flex items-center gap-3 text-xs tracking-widest text-muted-foreground uppercase">
-            <span className="h-px flex-1 bg-border" />
-            ou
-            <span className="h-px flex-1 bg-border" />
-          </div>
-
-          <Button variant="outline" className="w-full" onClick={entrarComGoogle} disabled={ocupado}>
-            Entrar com Google
-          </Button>
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
